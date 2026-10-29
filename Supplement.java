@@ -18,9 +18,13 @@ public class Supplement {
      *
      * @param name       the display name of the supplement; defaults to empty string if {@code null}
      * @param weeklyCost the recurring weekly cost of the supplement ($)
+     * @throws IllegalArgumentException if the name is null, empty, or consists only of whitespace
      */
     public Supplement(String name, double weeklyCost) {
-        this.name = name != null ? name.trim() : "";
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Supplement name cannot be null or empty.");
+        }
+        this.name = name.trim();
         this.weeklyCost = weeklyCost;
     }
 
