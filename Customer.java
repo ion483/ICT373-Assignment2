@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,9 +104,11 @@ public abstract class Customer {
 
     /**
      * Generates a formatted weekly notification email detailing new issue availability and active supplements.
+     *
+     * @param magazineBaseCost the base weekly cost of the main magazine issue
      * @return a formatted email notification String
      */
-    public String generateWeeklyEmail() {
+    public String generateWeeklyEmail(double magazineBaseCost) {
         StringBuilder sb = new StringBuilder();
         sb.append("To: ").append(email).append("\n");
         sb.append("Subject: Your Weekly Magazine is Ready!\n");

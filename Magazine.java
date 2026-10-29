@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +10,9 @@ import java.util.List;
  * File Name: Magazine.java
  */
 public class Magazine {
+    /** The base weekly subscription cost for the main magazine. */
+    private double weeklyBaseCost;
+
     /** The list of all supplements available for subscription. */
     private List<Supplement> availableSupplements;
 
@@ -20,11 +21,28 @@ public class Magazine {
 
     /**
      * Constructs a new Magazine service with a specified weekly base cost.
+     *
+     * @param weeklyBaseCost the weekly price for the main magazine issue
      */
-    public Magazine() {
+    public Magazine(double weeklyBaseCost) {
+        this.weeklyBaseCost = weeklyBaseCost;
         this.availableSupplements = new ArrayList<>();
         this.customers = new ArrayList<>();
     }
+
+    /**
+     * Retrieves the base weekly subscription cost of the main magazine.
+     *
+     * @return the weekly base cost as a double
+     */
+    public double getWeeklyBaseCost() { return weeklyBaseCost; }
+
+    /**
+     * Updates the base weekly subscription cost of the main magazine.
+     *
+     * @param weeklyBaseCost the new weekly base cost to set
+     */
+    public void setWeeklyBaseCost(double weeklyBaseCost) { this.weeklyBaseCost = weeklyBaseCost; }
 
     /**
      * Retrieves the list of all available supplements offered by the magazine.

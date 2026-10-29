@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,21 +86,24 @@ public class PayingCustomer extends Customer {
      * for the primary customer and each associate, multiplied by 4 weeks.
      * </p>
      *
+     * @param magazineBaseCost the weekly base cost of the main magazine subscription
      * @return the total calculated monthly cost ($) across 4 weeks
      */
-    public double calculateMonthlyTotal() {
-        double weeklyTotal = getWeeklySupplementsCost();
+    public double calculateMonthlyTotal(double magazineBaseCost) {
+        double weeklyTotal = magazineBaseCost + getWeeklySupplementsCost();
         for (AssociateCustomer assoc : associateCustomers) {
-            weeklyTotal += assoc.getWeeklySupplementsCost();
+            weeklyTotal += magazineBaseCost + assoc.getWeeklySupplementsCost();
         }
         return weeklyTotal * 4;
     }
 
     /**
      * Generates a fully itemized monthly billing statement email formatted for console output.
+     *
+     * @param magazineBaseCost the weekly base cost of the main magazine subscription
      * @return a formatted email String containing itemized charges for primary and associate accounts
      */
-    public String generateMonthlyBillingEmail() {
+    public String generateMonthlyBillingEmail(double magazineBaseCost) {
         StringBuilder sb = new StringBuilder();
         sb.append("To: ").append(getEmail()).append("\n");
         sb.append("Subject: Monthly Subscription Statement & Invoice\n");
@@ -111,6 +112,8 @@ public class PayingCustomer extends Customer {
 
         // Primary account holder itemization
         sb.append("Primary Customer: ").append(getName()).append("\n");
+        sb.append(" - Main Magazine Base Fee (4 weeks): $")
+          .append(String.format("%.2f", magazineBaseCost * 4)).append("\n");
         sb.append(" - Supplements Fee (4 weeks): $")
           .append(String.format("%.2f", getWeeklySupplementsCost() * 4)).append("\n");
 
@@ -119,12 +122,14 @@ public class PayingCustomer extends Customer {
             sb.append("\nAssociate Accounts Covered:\n");
             for (AssociateCustomer assoc : associateCustomers) {
                 sb.append(" * Associate: ").append(assoc.getName()).append("(").append(assoc.getEmail()).append(")\n");
+                sb.append("   - Main Magazine Base Fee (4 weeks): $")
+                  .append(String.format("%.2f", magazineBaseCost * 4)).append("\n");
                 sb.append("   - Supplements Fee (4 weeks): $")
                   .append(String.format("%.2f", assoc.getWeeklySupplementsCost() * 4)).append("\n");
             }
         }
 
-        double totalMonthlyCost = calculateMonthlyTotal();
+        double totalMonthlyCost = calculateMonthlyTotal(magazineBaseCost);
         sb.append("\nTotal Monthly Charge: $").append(String.format("%.2f", totalMonthlyCost)).append("\n");
         sb.append("Payment Method Charged: ").append(paymentMethod.getPaymentDetails()).append("\n");
         sb.append("--------------------------------------------------\n");

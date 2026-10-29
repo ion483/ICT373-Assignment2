@@ -17,8 +17,6 @@
  */
 
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -28,7 +26,7 @@ public class Main {
     public static void main(String[] args){
         displayStudentDetails();
         Scanner scanner = new Scanner(System.in);
-        Magazine magazine = new Magazine(); // Assume the base magazine cost is $10.00/week
+        Magazine magazine = new Magazine(10.00); // Assume the base magazine cost is $10.00/week
 
         System.out.println("\n==================================================");
         System.out.println("       MAGAZINE SERVICE INITIALIZATION");
@@ -368,7 +366,7 @@ public class Main {
             System.out.println("           WEEK " + week + " NOTIFICATIONS");
             System.out.println("==========================================");
             for (Customer c : magazine.getCustomers()) {
-                System.out.print(c.generateWeeklyEmail());
+                System.out.print(c.generateWeeklyEmail(magazine.getWeeklyBaseCost()));
             }
         }
     }
@@ -386,7 +384,7 @@ public class Main {
         for (Customer c : magazine.getCustomers()) {
             if (c instanceof PayingCustomer) {
                 PayingCustomer pc = (PayingCustomer) c;
-                System.out.print(pc.generateMonthlyBillingEmail());
+                System.out.print(pc.generateMonthlyBillingEmail(magazine.getWeeklyBaseCost()));
             }
         }
     }
@@ -513,7 +511,7 @@ public class Main {
         }
 
         System.out.println("\nGenerated Initial Weekly Email for New Customer:");
-        System.out.print(newCustomer.generateWeeklyEmail());
+        System.out.print(newCustomer.generateWeeklyEmail(magazine.getWeeklyBaseCost()));
 
         System.out.println("\nRemaining Active Customers:");
         List<Customer> remaining = magazine.getCustomers();

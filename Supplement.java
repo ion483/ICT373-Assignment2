@@ -1,5 +1,3 @@
-
-
 /**
  * Title: Magazine Service Test Driver
  * Author: Chang Yun Shiang
