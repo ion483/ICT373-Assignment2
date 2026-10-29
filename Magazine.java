@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Title: Magazine Service Test Driver
  * Author: Chang Yun Shiang
@@ -9,7 +6,15 @@ import java.util.List;
  * Core domain class managing magazine pricing, available supplements, and customer base.
  * File Name: Magazine.java
  */
-public class Magazine {
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Magazine implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The base weekly subscription cost for the main magazine. */
     private double weeklyBaseCost;
 

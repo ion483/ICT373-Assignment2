@@ -6,7 +6,12 @@
  * Represents a weekly supplement that can be added to a customer's subscription.
  * File Name: Supplement.java
  */
-public class Supplement {
+
+import java.io.Serializable;
+
+public class Supplement implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The display name of the supplement. */
     private String name;
 

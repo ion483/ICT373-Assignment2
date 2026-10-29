@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Title: Magazine Service Test Driver
  * Author: Chang Yun Shiang
@@ -9,7 +6,14 @@ import java.util.List;
  * Represents a customer who pays for their own subscription and optional associates.
  * File Name: payingCustomer.java
  */
-public class PayingCustomer extends Customer {
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PayingCustomer extends Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The payment method registered to this customer for automatic billing. */
     private PaymentMethod paymentMethod;
 

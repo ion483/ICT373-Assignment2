@@ -6,7 +6,12 @@
  * Abstract class representing a generic payment method.
  * File Name: PaymentMethod.java
  */
-public abstract class PaymentMethod {
+
+import java.io.Serializable;
+
+public abstract class PaymentMethod implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The full legal name of the account holder associated with this payment method. */
     private String accountName;
 

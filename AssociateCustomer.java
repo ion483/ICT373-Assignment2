@@ -6,7 +6,12 @@
  * Represents an associate customer paid for by a PayingCustomer.
  * File Name: AssociateCustomer.java
  */
-public class AssociateCustomer extends Customer {
+
+import java.io.Serializable;
+
+public class AssociateCustomer extends Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The paying customer responsible for handling payment for this associate. */
     private PayingCustomer payingCustomer;
 

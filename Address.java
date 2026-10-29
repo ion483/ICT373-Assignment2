@@ -5,7 +5,12 @@
  * Date: October 2026
  * Represents a physical address for a customer.
  */
-public class Address {
+
+import java.io.Serializable;
+
+public class Address implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The street address line (e.g., "123 Main St"). */
     private String street;
 

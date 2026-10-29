@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Title: Magazine Service Test Driver
  * Author: Chang Yun Shiang
@@ -9,7 +6,14 @@ import java.util.List;
  * Abstract base class representing a generic customer.
  * File Name: Customer.java
  */
-public abstract class Customer {
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /** The full name of the customer. */
     private String name;
 
