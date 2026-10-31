@@ -1,5 +1,3 @@
-package magazineservice;
-
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

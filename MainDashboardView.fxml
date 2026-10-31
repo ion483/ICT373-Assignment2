@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" prefWidth="950" prefHeight="700" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="magazineservice.MainDashboardController">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <children>
+        <!-- Global Persistence Action Buttons -->
+        <HBox spacing="10">
+            <Button text="Save Data (.ser)" onAction="#handleSave"/>
+            <Button text="Load Data (.ser)" onAction="#handleLoad"/>
+        </HBox>
+
+        <!-- Main Mode TabPane -->
+        <TabPane fx:id="modeTabPane" VBox.vgrow="ALWAYS">
+            <tabs>
+                <!-- 1. VIEW MODE TAB -->
+                <Tab text="View Mode" closable="false">
+                    <HBox spacing="10">
+                        <VBox spacing="10" prefWidth="300">
+                            <Label text="Available Supplements"/>
+                            <ListView fx:id="viewSupplementListView" VBox.vgrow="ALWAYS"/>
+                            <Label text="Registered Customers"/>
+                            <ListView fx:id="viewCustomerListView" VBox.vgrow="ALWAYS"/>
+                        </VBox>
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Information &amp; Details Panel"/>
+                            <TextArea fx:id="infoPanelTextArea" editable="false" VBox.vgrow="ALWAYS"/>
+                            <Button fx:id="loadBillingHistoryButton" text="Load Asynchronous Billing History" visible="false" onAction="#handleLoadBillingHistory"/>
+                        </VBox>
+                    </HBox>
+                </Tab>
+                
+                <!-- 2. CREATE MODE TAB -->
+                <Tab text="Create Mode" closable="false">
+                    <ScrollPane fitToWidth="true">
+                        <VBox spacing="15">
+                            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                            
+                            <!-- Add Supplement Section -->
+                            <TitledPane text="Add New Supplement">
+                                <VBox spacing="8">
+                                    <TextField fx:id="createSupplementNameField" promptText="Supplement Name"/>
+                                    <TextField fx:id="createSupplementCostField" promptText="Weekly Cost ($)"/>
+                                    <Button text="Add Supplement" onAction="#handleAddSupplement"/>
+                                </VBox>
+                            </TitledPane>
+                            
+                            <!-- Add Customer Section -->
+                            <TitledPane text="Register New Customer">
+                                <VBox spacing="8">
+                                    <TextField fx:id="createCustomerNameField" promptText="Full Name"/>
+                                    <TextField fx:id="createCustomerEmailField" promptText="Email Address"/>
+                                    
+                                    <Label text="Physical Address:"/>
+                                    <TextField fx:id="createStreetField" promptText="Street Number &amp; Name"/>
+                                    <TextField fx:id="createSuburbField" promptText="Suburb"/>
+                                    <TextField fx:id="createStateField" promptText="State (e.g., WA)"/>
+                                    <TextField fx:id="createPostCodeField" promptText="Postcode"/>
+                                    
+                                    <Label text="Customer Type:"/>
+                                    <ComboBox fx:id="createCustomerTypeCombo" prefWidth="250"/>
+                                    
+                                    <Label text="Select Paying Customer (if Associate):"/>
+                                    <ComboBox fx:id="createPayingCustomerCombo" prefWidth="250"/>
+                                    
+                                    <Label text="Payment Method (if Paying Customer):"/>
+                                    <ComboBox fx:id="createPaymentTypeCombo" prefWidth="250"/>
+                                    <TextField fx:id="createPaymentHolderField" promptText="Account/Card Holder Name"/>
+                                    <TextField fx:id="createCardNumberField" promptText="Card Number (Credit Card)"/>
+                                    <TextField fx:id="createCardExpiryField" promptText="Expiry Date MM/YY (Credit Card)"/>
+                                    <TextField fx:id="createBsbField" promptText="BSB (Bank Account)"/>
+                                    <TextField fx:id="createBankAccountField" promptText="Account Number (Bank Account)"/>
+                                    
+                                    <Label text="Select Subscribed Supplements (Hold Ctrl for Multiple):"/>
+                                    <ListView fx:id="createSupplementSelectList" prefHeight="100"/>
+                                    
+                                    <Button text="Register Customer" onAction="#handleAddCustomer"/>
+                                </VBox>
+                            </TitledPane>
+                        </VBox>
+                    </ScrollPane>
+                </Tab>
+                
+                <!-- 3. EDIT MODE TAB -->
+                <Tab text="Edit Mode" closable="false">
+                    <HBox spacing="10">
+                        <VBox spacing="10" prefWidth="350">
+                            <Label text="Select Customer to Edit/Delete"/>
+                            <ListView fx:id="editCustomerListView" VBox.vgrow="ALWAYS"/>
+                            <Button text="Delete Selected Customer" onAction="#handleDeleteCustomer"/>
+                            
+                            <Label text="Select Supplement to Edit/Delete"/>
+                            <ListView fx:id="editSupplementListView" VBox.vgrow="ALWAYS"/>
+                            <Button text="Delete Selected Supplement" onAction="#handleDeleteSupplement"/>
+                        </VBox>
+                        
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <TitledPane text="Update Customer Details">
+                                <VBox spacing="8">
+                                    <TextField fx:id="editCustomerNameField" promptText="New Name"/>
+                                    <TextField fx:id="editCustomerEmailField" promptText="New Email"/>
+                                    <TextField fx:id="editStreetField" promptText="New Street"/>
+                                    <TextField fx:id="editSuburbField" promptText="New Suburb"/>
+                                    <TextField fx:id="editStateField" promptText="New State"/>
+                                    <TextField fx:id="editPostCodeField" promptText="New Postcode"/>
+                                    <Button text="Save Customer Changes" onAction="#handleUpdateCustomer"/>
+                                </VBox>
+                            </TitledPane>
+                            
+                            <TitledPane text="Update Supplement Details">
+                                <VBox spacing="8">
+                                    <TextField fx:id="editSupplementNameField" promptText="New Supplement Name"/>
+                                    <TextField fx:id="editSupplementCostField" promptText="New Weekly Cost"/>
+                                    <Button text="Save Supplement Changes" onAction="#handleUpdateSupplement"/>
+                                </VBox>
+                            </TitledPane>
+                        </VBox>
+                    </HBox>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</VBox>

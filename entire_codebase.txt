@@ -1,0 +1,1707 @@
+﻿=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\Address.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Represents a physical address for a customer.
+ */
+
+import java.io.Serializable;
+
+public class Address implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The street address line (e.g., "123 Main St"). */
+    private String street;
+
+    /** The suburb or city name (e.g., "Sydney"). */
+    private String suburb;
+
+    /** The state or territory abbreviation or name. */
+    private String state;
+
+    /** The postal or ZIP code. */
+    private String postCode;
+
+    /**
+     * Constructs a new Address object with specified details.
+     * <p>
+     * Null arguments are converted to empty strings, and leading/trailing
+     * whitespace is automatically trimmed.
+     * </p>
+     *
+     * @param street   the street number and name
+     * @param suburb   the suburb, city, or locality
+     * @param state    the state or territory code
+     * @param postCode the postal or ZIP code
+     */
+    public Address(String street, String suburb, String state, String postCode) {
+        this.street = street != null ? street.trim() : "";
+        this.suburb = suburb != null ? suburb.trim() : "";
+        this.state = state != null ? state.trim() : "";
+        this.postCode = postCode != null ? postCode.trim() : "";
+    }
+
+    /**
+     * Gets the street address line.
+     *
+     * @return the street address
+     */
+    public String getStreet() { return street; }
+
+    /**
+     * Gets the suburb or locality.
+     *
+     * @return the suburb name
+     */
+    public String getSuburb() { return suburb; }
+
+    /**
+     * Gets the state or territory.
+     *
+     * @return the state name or abbreviation
+     */
+    public String getState() { return state; }
+
+    /**
+     * Gets the postal code.
+     *
+     * @return the postal code
+     */
+    public String getPostCode() { return postCode; }
+
+    /**
+     * Sets the street address line.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param street the street address to set
+     */
+    public void setStreet(String street) {
+        this.street = street != null ? street.trim() : "";
+    }
+
+    /**
+     * Sets the suburb or locality.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param suburb the suburb to set
+     */
+    public void setSuburb(String suburb) {
+        this.suburb = suburb != null ? suburb.trim() : "";
+    }
+
+    /**
+     * Sets the state or territory.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param state the state to set
+     */
+    public void setState(String state) {
+        this.state = state != null ? state.trim() : "";
+    }
+
+    /**
+     * Sets the postal code.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param postCode the postal code to set
+     */
+    public void setPostCode(String postCode) {
+        this.postCode = postCode != null ? postCode.trim() : "";
+    }
+
+    /**
+     * Returns a single-line formatted representation of the address.
+     *
+     * @return a formatted string in the format "Street, Suburb State PostCode"
+     */
+    @Override
+    public String toString() {
+        return street + ", " + suburb + " " + state + " " + postCode;
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\AssociateCustomer.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Represents an associate customer paid for by a PayingCustomer.
+ * File Name: AssociateCustomer.java
+ */
+
+import java.io.Serializable;
+
+public class AssociateCustomer extends Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The paying customer responsible for handling payment for this associate. */
+    private PayingCustomer payingCustomer;
+
+    /**
+     * Constructs an AssociateCustomer with a name and email, leaving the paying customer unassigned.
+     *
+     * @param name  the full name of the associate customer
+     * @param email the email address of the associate customer
+     * @param address the physical address of the associate customer
+     */
+    public AssociateCustomer(String name, String email, Address address) {
+        super(name, email, address);
+    }
+
+    /**
+     * Constructs an AssociateCustomer with a name, email, and designated paying customer.
+     *
+     * @param name           the full name of the associate customer
+     * @param email          the email address of the associate customer
+     * @param address        the physical address of the associate customer
+     * @param payingCustomer the paying customer responsible for billing
+     */
+    public AssociateCustomer(String name, String email, Address address, PayingCustomer payingCustomer) {
+        super(name, email, address);
+        this.payingCustomer = payingCustomer;
+    }
+
+    /**
+     * Retrieves the paying customer associated with this account.
+     *
+     * @return the PayingCustomer instance responsible for payment
+     */
+    public PayingCustomer getPayingCustomer() { return payingCustomer; }
+
+    /**
+     * Sets or updates the paying customer responsible for this account.
+     *
+     * @param payingCustomer the PayingCustomer instance to assign
+     */
+    public void setPayingCustomer(PayingCustomer payingCustomer) { this.payingCustomer = payingCustomer; }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\BankAccount.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Represents a bank account payment method for direct debit.
+ * File Name: BankAccount.java
+ */
+public class BankAccount extends PaymentMethod {
+    /** The Bank-State-Branch (BSB) number identifying the bank branch. */
+    private String bsb;
+
+    /** The individual bank account number. */
+    private String accountNumber;
+
+    /**
+     * Constructs a new BankAccount payment method with specified details.
+     * <p>
+     * Null arguments for BSB and account number are automatically converted to 
+     * empty strings, and leading/trailing whitespace is trimmed.
+     * </p>
+     *
+     * @param accountName   the full name registered on the bank account
+     * @param bsb           the BSB code associated with the account branch
+     * @param accountNumber the unique account identification number
+     */
+    public BankAccount(String accountName, String bsb, String accountNumber) {
+        super(accountName);
+        this.bsb = bsb != null ? bsb.trim() : "";
+        this.accountNumber = accountNumber != null ? accountNumber.trim() : "";
+    }
+
+    /**
+     * Retrieves the BSB code of the bank account.
+     *
+     * @return the BSB code as a String
+     */
+    public String getBsb() { return bsb; }
+
+    /**
+     * Retrieves the account number of the bank account.
+     *
+     * @return the account number as a String
+     */
+    public String getAccountNumber() { return accountNumber; }
+
+    /**
+     * Formats and returns the detailed bank account summary for payment identification.
+     *
+     * @return a formatted string containing account name, BSB, and account number
+     */
+    @Override
+    public String getPaymentDetails() {
+        return "Bank Account [Account Name: " + getAccountName() 
+                + ", BSB: " + bsb + ", Acc #: " + accountNumber + "]";
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\BillingHistoryTask.java ===
+/**
+ * Background task using javafx.concurrent.Task to compute and generate 
+ * a paying customer's billing history asynchronously without blocking the JavaFX UI thread.
+ * 
+ * @author Yun Shiang
+ * @version 2.0
+ */
+
+import javafx.concurrent.Task;
+
+public class BillingHistoryTask extends Task<String> {
+    private PayingCustomer payingCustomer;
+    private double magazineBaseCost;
+
+    public BillingHistoryTask(PayingCustomer payingCustomer, double magazineBaseCost) {
+        this.payingCustomer = payingCustomer;
+        this.magazineBaseCost = magazineBaseCost;
+    }
+
+    @Override
+    protected String call() throws Exception {
+        // Simulate background computation progress
+        updateMessage("Computing billing history...");
+        for (int i = 1; i <= 3; i++) {
+            Thread.sleep(200); // Simulate background processing delay
+            updateProgress(i, 3);
+        }
+
+        if (payingCustomer == null) {
+            return "Error: No paying customer selected for billing history.";
+        }
+
+        // Build the itemized billing history statement
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== ASYNCHRONOUS BILLING HISTORY REPORT ===\n");
+        sb.append("Customer Name: ").append(payingCustomer.getName()).append("\n");
+        sb.append("Email: ").append(payingCustomer.getEmail()).append("\n");
+        sb.append("Payment Method: ").append(payingCustomer.getPaymentMethod().getPaymentDetails()).append("\n\n");
+        
+        sb.append("Itemized Charges (4-Week Billing Cycle):\n");
+        sb.append(" - Main Magazine Base Fee: $").append(String.format("%.2f", magazineBaseCost * 4)).append("\n");
+        sb.append(" - Primary Supplements Fee: $").append(String.format("%.2f", payingCustomer.getWeeklySupplementsCost() * 4)).append("\n");
+
+        if (!payingCustomer.getAssociateCustomers().isEmpty()) {
+            sb.append("\nSponsored Associate Accounts:\n");
+            for (AssociateCustomer assoc : payingCustomer.getAssociateCustomers()) {
+                sb.append(" * ").append(assoc.getName()).append(" - Supplements: $")
+                  .append(String.format("%.2f", assoc.getWeeklySupplementsCost() * 4)).append("\n");
+            }
+        }
+
+        double totalMonthlyCost = payingCustomer.calculateMonthlyTotal(magazineBaseCost);
+        sb.append("\nTotal Monthly Billing Amount: $").append(String.format("%.2f", totalMonthlyCost)).append("\n");
+        sb.append("===========================================\n");
+
+        return sb.toString();
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\CreditCard.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Represents a credit card payment method.
+ * File Name: CreditCard.java
+ */
+public class CreditCard extends PaymentMethod {
+    /** The full credit card number string. */
+    private String cardNumber;
+
+    /** The card expiry date (formatted as MM/YY). */
+    private String expiryDate;
+
+    /**
+     * Constructs a new CreditCard payment method with specified details.
+     * <p>
+     * Null arguments for card number and expiry date are automatically converted 
+     * to empty strings, and leading/trailing whitespace is trimmed.
+     * </p>
+     *
+     * @param accountName the full name of the credit card holder
+     * @param cardNumber  the full card number digit string
+     * @param expiryDate  the expiration date string (e.g., "12/28")
+     */
+    public CreditCard(String accountName, String cardNumber, String expiryDate) {
+        super(accountName);
+        this.cardNumber = cardNumber != null ? cardNumber.trim() : "";
+        this.expiryDate = expiryDate != null ? expiryDate.trim() : "";
+    }
+
+    /**
+     * Retrieves the unmasked credit card number.
+     *
+     * @return the card number as a String
+     */
+    public String getCardNumber() { return cardNumber; }
+
+    /**
+     * Retrieves the credit card expiration date.
+     *
+     * @return the expiry date as a String
+     */
+    public String getExpiryDate() { return expiryDate; }
+
+    /**
+     * Formats and returns masked credit card details for secure displaying and billing summaries.
+     * <p>
+     * Only reveals the final four digits of the credit card number.
+     * </p>
+     *
+     * @return a formatted string showing holder name, masked card number, and expiry date
+     */
+    @Override
+    public String getPaymentDetails() {
+        String lastFour = cardNumber.length() >= 4 
+                ? cardNumber.substring(cardNumber.length() - 4) 
+                : cardNumber;
+        return "Credit Card [Holder: " + getAccountName() + ", Card #: **** **** **** " 
+                + lastFour + ", Expiry: " + expiryDate + "]";
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\Customer.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Abstract base class representing a generic customer.
+ * File Name: Customer.java
+ */
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The full name of the customer. */
+    private String name;
+
+    /** The email address of the customer (used as a unique identifier). */
+    private String email;
+
+    /** The physical address of the customer. */
+    private Address address;
+
+    /** The list of magazine supplements this customer is subscribed to. */
+    private List<Supplement> interestedSupplements;
+
+    /**
+     * Constructs a new Customer instance with the specified name and email.
+     * <p>
+     * Both inputs are stripped of leading and trailing whitespace. Empty or null 
+     * arguments are rejected to ensure every customer has a valid identity.
+     * </p>
+     *
+     * @param name                      the full name of the customer (cannot be null or empty)
+     * @param email                     the contact email address used as a unique identifier (cannot be null or empty)
+     * @param address the physical address of the customer (cannot be null)
+     * @throws IllegalArgumentException if the name or email is null, empty, or consists only of whitespace
+     */
+    public Customer(String name, String email, Address address) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer name cannot be null or empty.");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer email cannot be null or empty.");
+        }
+        if (address == null) {
+            throw new IllegalArgumentException("Customer address cannot be null.");
+        }
+        this.name = name.trim();
+        this.email = email.trim();
+        this.address = address;
+        this.interestedSupplements = new ArrayList<>();
+    }
+
+    /**
+     * Retrieves the customer's full name.
+     *
+     * @return the customer name
+     */
+    public String getName() { return name; }
+
+    /**
+     * Updates the customer's full name.
+     *
+     * @param name the new full name (cannot be null or empty)
+     * @throws IllegalArgumentException if the name is null or empty
+     */
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer name cannot be null or empty.");
+        }
+        this.name = name.trim();
+    }
+
+    /**
+     * Retrieves the customer's email address.
+     *
+     * @return the customer email
+     */
+    public String getEmail() { return email; }
+
+
+    /**
+     * Updates the customer's email address.
+     *
+     * @param email the new unique email address (cannot be null or empty)
+     * @throws IllegalArgumentException if the email is null or empty
+     */
+    public void setEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer email cannot be null or empty.");
+        }
+        this.email = email.trim();
+    }
+
+    /**
+     * Retrieves the customer's physical address.
+     *
+     * @return the Address object
+     */
+    public Address getAddress() { return address; }
+
+    /**
+     * Updates the customer's physical address.
+     *
+     * @param address the new Address object (cannot be null)
+     * @throws IllegalArgumentException if the address is null
+     */
+    public void setAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Customer address cannot be null.");
+        }
+        this.address = address;
+    }
+
+    /**
+     * Retrieves the list of supplements the customer is currently subscribed to.
+     *
+     * @return a List of Supplement objects
+     */
+    public List<Supplement> getInterestedSupplements() { return interestedSupplements; }
+
+    /**
+     * Subscribes the customer to a new supplement if they are not already subscribed.
+     *
+     * @param supplement the Supplement instance to add
+     * @return true if the supplement was added successfully; false if it was already present
+     */
+    public boolean addSupplement(Supplement supplement) {
+        if (!interestedSupplements.contains(supplement)) {
+            return interestedSupplements.add(supplement);
+        }
+        return false;
+    }
+
+    /**
+     * Unsubscribes the customer from a supplement if currently subscribed.
+     *
+     * @param supplement the Supplement instance to remove
+     * @return true if the supplement was removed successfully; false if it was not found
+     */
+    public boolean removeSupplement(Supplement supplement) {
+        if (interestedSupplements.contains(supplement)) {
+            return interestedSupplements.remove(supplement);
+        }
+        return false;
+    }
+
+    /**
+     * Calculates the total weekly cost of all supplements subscribed to by this customer.
+     *
+     * @return the sum of weekly costs for all subscribed supplements as a double
+     */
+    public double getWeeklySupplementsCost() {
+        double total = 0.0;
+        for (Supplement s : interestedSupplements) {
+            total += s.getWeeklyCost();
+        }
+        return total;
+    }
+
+    /**
+     * Generates a formatted weekly notification email detailing new issue availability and active supplements.
+     *
+     * @param magazineBaseCost the base weekly cost of the main magazine issue
+     * @return a formatted email notification String
+     */
+    public String generateWeeklyEmail(double magazineBaseCost) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("To: ").append(email).append("\n");
+        sb.append("Subject: Your Weekly Magazine is Ready!\n");
+        sb.append("Dear ").append(name).append(",\n\n");
+        sb.append("Your main magazine issue for this week is ready to read.\n");
+        sb.append("Delivery Address: ").append(address.toString()).append("\n");
+        sb.append("Current Subscribed Supplements:\n");
+        
+        if (interestedSupplements.isEmpty()) {
+            sb.append(" - None\n");
+        } else {
+            for (Supplement s : interestedSupplements) {
+                sb.append(" - ").append(s.getName())
+                  .append(" ($").append(String.format("%.2f", s.getWeeklyCost())).append("/week)\n");
+            }
+        }
+        sb.append("--------------------------------------------------\n");
+        return sb.toString();
+    }
+
+    /**
+     * Compares this customer to another object based on case-insensitive email equality.
+     *
+     * @param o the object to compare with
+     * @return true if the given object is a Customer with the same email address; false otherwise
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return email != null && customer.email != null 
+            && email.trim().equalsIgnoreCase(customer.email.trim());
+    }
+
+    /**
+     * Returns a hash code derived from the customer's normalized lower-case email address.
+     *
+     * @return an integer hash code
+     */
+    @Override
+    public int hashCode() {
+        return email != null ? email.trim().toLowerCase().hashCode() : 0;
+    }
+}
+
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\FileHandler.java ===
+/**
+ * Handles file persistence operations including saving and loading Magazine objects
+ * via Java object serialization and JavaFX FileChooser.
+ * 
+ * @author Chang Yun Shiang
+ * @version 2.0
+ */
+
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.*;
+
+public class FileHandler {
+
+    /**
+     * Prompts the user with a FileChooser to save the current Magazine object to disk.
+     * 
+     * @param ownerStage the parent JavaFX stage for the dialog window
+     * @param magazine   the Magazine instance to serialize and save
+     */
+    public static void saveMagazine(Stage ownerStage, Magazine magazine) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Magazine Service Data");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Serialized Data Files (*.ser)", "*.ser")
+        );
+        fileChooser.setInitialFileName("magazine_data.ser");
+
+        File file = fileChooser.showSaveDialog(ownerStage);
+        if (file != null) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+                oos.writeObject(magazine);
+                System.out.println("[SUCCESS] Magazine data successfully saved to " + file.getAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("[ERROR] Failed to save file: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Prompts the user with a FileChooser to load a saved Magazine object from disk.
+     * 
+     * @param ownerStage the parent JavaFX stage for the dialog window
+     * @return the deserialized Magazine instance, or null if loading was cancelled or failed
+     */
+    public static Magazine loadMagazine(Stage ownerStage) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Magazine Service Data");
+        fileChooser.getExtensionFilters().add(
+            new FileChooser.ExtensionFilter("Serialized Data Files (*.ser)", "*.ser")
+        );
+
+        File file = fileChooser.showOpenDialog(ownerStage);
+        if (file != null) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+                Magazine magazine = (Magazine) ois.readObject();
+                System.out.println("[SUCCESS] Magazine data successfully loaded from " + file.getAbsolutePath());
+                return magazine;
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("[ERROR] Failed to load file: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\Magazine.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Core domain class managing magazine pricing, available supplements, and customer base.
+ * File Name: Magazine.java
+ */
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Magazine implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The base weekly subscription cost for the main magazine. */
+    private double weeklyBaseCost;
+
+    /** The list of all supplements available for subscription. */
+    private List<Supplement> availableSupplements;
+
+    /** The list of all registered active customers (both paying and associate). */
+    private List<Customer> customers;
+
+    /**
+     * Constructs a new Magazine service with a specified weekly base cost.
+     *
+     * @param weeklyBaseCost the weekly price for the main magazine issue
+     */
+    public Magazine(double weeklyBaseCost) {
+        this.weeklyBaseCost = weeklyBaseCost;
+        this.availableSupplements = new ArrayList<>();
+        this.customers = new ArrayList<>();
+    }
+
+    /**
+     * Retrieves the base weekly subscription cost of the main magazine.
+     *
+     * @return the weekly base cost as a double
+     */
+    public double getWeeklyBaseCost() { return weeklyBaseCost; }
+
+    /**
+     * Updates the base weekly subscription cost of the main magazine.
+     *
+     * @param weeklyBaseCost the new weekly base cost to set
+     */
+    public void setWeeklyBaseCost(double weeklyBaseCost) { this.weeklyBaseCost = weeklyBaseCost; }
+
+    /**
+     * Retrieves the list of all available supplements offered by the magazine.
+     *
+     * @return a List of Supplement objects
+     */
+    public List<Supplement> getAvailableSupplements() { return availableSupplements; }
+
+    /**
+     * Retrieves the list of all active registered customers.
+     *
+     * @return a List of Customer objects
+     */
+    public List<Customer> getCustomers() { return customers; }
+
+    /**
+     * Adds a new supplement to the magazine's catalog if it is not already present.
+     *
+     * @param supplement the Supplement instance to add
+     * @return true if the supplement was added successfully; false if it already exists
+     */
+    public boolean addSupplement(Supplement supplement) {
+        if (!availableSupplements.contains(supplement)) {
+            return availableSupplements.add(supplement);
+        }
+        return false;
+    }
+
+    /**
+     * Removes an existing supplement from the magazine's catalog and cascades the removal 
+     * from any customer's subscribed/interested supplement list.
+     *
+     * @param supplement the Supplement instance to remove
+     * @return true if the supplement was successfully removed; false if null or not found
+     */
+    public boolean removeSupplement(Supplement supplement) {
+        if (supplement == null || !availableSupplements.contains(supplement)) {
+            return false;
+        }
+
+        // Cascade removal: remove this supplement from every customer's subscription list
+        for (Customer customer : customers) {
+            if (customer.getInterestedSupplements() != null) {
+                customer.removeSupplement(supplement);
+            }
+        }
+
+        // Finally, remove the supplement from the magazine's global catalog
+        return availableSupplements.remove(supplement);
+    }
+
+    /**
+     * Registers a new customer with the magazine service if not already registered.
+     *
+     * @param customer the Customer instance to add
+     * @return true if the customer was registered successfully; false if already registered
+     */
+    public boolean addCustomer(Customer customer) {
+        if (!customers.contains(customer)) {
+            return customers.add(customer);
+        }
+        return false;
+    }
+
+    /**
+     * Removes an existing customer from the magazine service.
+     * <p>
+     * If the customer is a PayingCustomer, a cascade deletion occurs to remove all 
+     * associated customers paid for by them. If the customer is an AssociateCustomer, 
+     * they are unlinked from their PayingCustomer before removal.
+     * </p>
+     *
+     * @param customer the Customer instance to remove
+     * @return true if the customer was successfully removed; false if null or not found
+     */
+    public boolean removeCustomer(Customer customer) {
+        if (customer == null || !customers.contains(customer)) {
+            return false;
+        }
+
+        if (customer instanceof PayingCustomer) {
+            PayingCustomer pc = (PayingCustomer) customer;
+            
+            // Cascade delete: remove all associated customers paid for by this customer
+            List<AssociateCustomer> associates = new ArrayList<>(pc.getAssociateCustomers());
+            for (AssociateCustomer assoc : associates) {
+                pc.removeAssociateCustomer(assoc);
+                customers.remove(assoc); // Remove associate from active magazine customer list
+            }
+        } else if (customer instanceof AssociateCustomer) {
+            AssociateCustomer ac = (AssociateCustomer) customer;
+            if (ac.getPayingCustomer() != null) {
+                ac.getPayingCustomer().removeAssociateCustomer(ac);
+            }
+        }
+
+        return customers.remove(customer);
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\Main.java ===
+/**
+ * Title: Magazine Service JavaFX Application Entry Point
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * File Name: Main.java
+ * Purpose: Launches the JavaFX GUI application for the Magazine Service, 
+ *          loading the main dashboard view, controller, and sample demo data.
+ * 
+ * @author Chang Yun Shiang
+ * @version 2.0
+ */
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            // Load the FXML view file (Ensure your FXML file is named MainDashboardView.fxml in the same package)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainDashboardView.fxml"));
+            Parent root = loader.load();
+
+            // Retrieve controller instance and pass dependencies
+            MainDashboardController controller = loader.getController();
+            controller.setStage(primaryStage);
+
+            // Create and pre-populate a demonstration Magazine service for testing & grading
+            Magazine magazine = new Magazine(10.00); // $10.00 base weekly cost
+            setupDemoData(magazine);
+            controller.setMagazine(magazine);
+
+            // Configure and display the primary application window
+            primaryStage.setTitle("Magazine Service Management System - ICT373 Assignment 2");
+            primaryStage.setScene(new Scene(root, 950, 700));
+            primaryStage.setResizable(true);
+            primaryStage.show();
+
+        } catch (Exception e) {
+            System.err.println("[ERROR] Failed to initialize JavaFX application window: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sets up pre-populated demonstration data to satisfy the assignment requirement 
+     * for a demonstration Magazine service and User Guide walkthrough.
+     * 
+     * @param magazine the target Magazine instance to populate
+     */
+    private void setupDemoData(Magazine magazine) {
+        // 1. Add Default Supplements
+        Supplement tech = new Supplement("Tech & Gadgets", 4.50);
+        Supplement health = new Supplement("Health & Fitness", 3.00);
+        Supplement gaming = new Supplement("Gaming Monthly", 5.00);
+        Supplement cooking = new Supplement("Gourmet Cooking", 2.50);
+
+        magazine.addSupplement(tech);
+        magazine.addSupplement(health);
+        magazine.addSupplement(gaming);
+        magazine.addSupplement(cooking);
+
+        // 2. Add Default Addresses, Payment Methods & Customers
+        Address addr1 = new Address("123 Main St", "Perth", "WA", "6000");
+        PaymentMethod card1 = new CreditCard("Alice Smith", "4111222233334444", "12/28");
+        PayingCustomer alice = new PayingCustomer("Alice Smith", "alice@example.com", addr1, card1);
+        alice.addSupplement(tech);
+        alice.addSupplement(health);
+
+        Address addr2 = new Address("456 High St", "Fremantle", "WA", "6160");
+        PaymentMethod bank1 = new BankAccount("Charlie Brown", "123-456", "98765432");
+        PayingCustomer charlie = new PayingCustomer("Charlie Brown", "charlie@example.com", addr2, bank1);
+        charlie.addSupplement(gaming);
+
+        Address addr3 = new Address("789 Subiaco Rd", "Subiaco", "WA", "6008");
+        AssociateCustomer bob = new AssociateCustomer("Bob Smith", "bob@example.com", addr3, alice);
+        bob.addSupplement(gaming);
+        alice.addAssociateCustomer(bob);
+
+        magazine.addCustomer(alice);
+        magazine.addCustomer(bob);
+        magazine.addCustomer(charlie);
+    }
+
+    /**
+     * Standard Java application entry point.
+     * 
+     * @command-line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\MainDashboardController.java ===
+package magazineservice;
+
+import javafx.concurrent.Worker;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.util.List;
+
+/**
+ * Enhanced Controller for the Main Dashboard GUI, managing View, Create, and Edit modes,
+ * list views, information panel interactions, multithreaded billing history tasks, 
+ * address handling, and flexible payment methods.
+ * 
+ * @author Yun Shiang
+ * @version 2.1
+ */
+public class MainDashboardController {
+
+    private Magazine magazine;
+    private Stage stage;
+
+    @FXML private TabPane modeTabPane;
+    
+    // View Mode Components
+    @FXML private ListView<Supplement> viewSupplementListView;
+    @FXML private ListView<Customer> viewCustomerListView;
+    @FXML private TextArea infoPanelTextArea;
+    @FXML private Button loadBillingHistoryButton;
+
+    // Create Mode Components
+    @FXML private TextField createMagazineCostField;
+    @FXML private TextField createSupplementNameField;
+    @FXML private TextField createSupplementCostField;
+    @FXML private TextField createCustomerNameField;
+    @FXML private TextField createCustomerEmailField;
+    
+    // Address fields for Create Mode
+    @FXML private TextField createStreetField;
+    @FXML private TextField createSuburbField;
+    @FXML private TextField createStateField;
+    @FXML private TextField createPostCodeField;
+
+    @FXML private ComboBox<String> createCustomerTypeCombo;
+    @FXML private ComboBox<PayingCustomer> createPayingCustomerCombo;
+    @FXML private ListView<Supplement> createSupplementSelectList;
+
+    // Payment Method fields for Create Mode
+    @FXML private ComboBox<String> createPaymentTypeCombo;
+    @FXML private TextField createPaymentHolderField;
+    @FXML private TextField createCardNumberField;
+    @FXML private TextField createCardExpiryField;
+    @FXML private TextField createBsbField;
+    @FXML private TextField createBankAccountField;
+
+    // Edit Mode Components
+    @FXML private ListView<Customer> editCustomerListView;
+    @FXML private ListView<Supplement> editSupplementListView;
+    @FXML private TextField editCustomerNameField;
+    @FXML private TextField editCustomerEmailField;
+
+    @FXML private TextField editStreetField;
+    @FXML private TextField editSuburbField;
+    @FXML private TextField editStateField;
+    @FXML private TextField editPostCodeField;
+
+    @FXML private TextField editSupplementNameField;
+    @FXML private TextField editSupplementCostField;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public void setMagazine(Magazine magazine) {
+        this.magazine = magazine;
+        refreshAllLists();
+    }
+
+    @FXML
+    public void initialize() {
+        if (magazine == null) {
+            magazine = new Magazine(10.00);
+        }
+
+        // Setup View Mode Listeners
+        if (viewSupplementListView != null) {
+            viewSupplementListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selectedSupplement) -> {
+                if (selectedSupplement != null) {
+                    displaySupplementInfo(selectedSupplement);
+                }
+            });
+        }
+
+        if (viewCustomerListView != null) {
+            viewCustomerListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, selectedCustomer) -> {
+                if (selectedCustomer != null) {
+                    displayCustomerInfo(selectedCustomer);
+                }
+            });
+        }
+
+        // Setup Create Mode Combos & Multi-selection list
+        if (createCustomerTypeCombo != null) {
+            createCustomerTypeCombo.getItems().addAll("Paying Customer", "Associate Customer");
+            createCustomerTypeCombo.getSelectionModel().selectFirst();
+            createCustomerTypeCombo.setOnAction(e -> updateCreatePayerDropdown());
+        }
+
+        if (createPaymentTypeCombo != null) {
+            createPaymentTypeCombo.getItems().addAll("Credit Card", "Bank Account");
+            createPaymentTypeCombo.getSelectionModel().selectFirst();
+        }
+
+        if (createSupplementSelectList != null) {
+            createSupplementSelectList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        }
+
+        // Setup Edit Mode Selection Listeners to populate fields
+        if (editCustomerListView != null) {
+            editCustomerListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, cust) -> {
+                if (cust != null) {
+                    editCustomerNameField.setText(cust.getName());
+                    editCustomerEmailField.setText(cust.getEmail());
+
+                    if (cust.getAddress() != null) {
+                        if (editStreetField != null) editStreetField.setText(cust.getAddress().getStreet());
+                        if (editSuburbField != null) editSuburbField.setText(cust.getAddress().getSuburb());
+                        if (editStateField != null) editStateField.setText(cust.getAddress().getState());
+                        if (editPostCodeField != null) editPostCodeField.setText(cust.getAddress().getPostCode());
+                    }
+                }
+            });
+        }
+
+        if (editSupplementListView != null) {
+            editSupplementListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, supp) -> {
+                if (supp != null) {
+                    editSupplementNameField.setText(supp.getName());
+                    editSupplementCostField.setText(String.valueOf(supp.getWeeklyCost()));
+                }
+            });
+        }
+    }
+
+    private void refreshAllLists() {
+        if (magazine == null) return;
+
+        if (viewSupplementListView != null) viewSupplementListView.getItems().setAll(magazine.getAvailableSupplements());
+        if (viewCustomerListView != null) viewCustomerListView.getItems().setAll(magazine.getCustomers());
+        if (editCustomerListView != null) editCustomerListView.getItems().setAll(magazine.getCustomers());
+        if (editSupplementListView != null) editSupplementListView.getItems().setAll(magazine.getAvailableSupplements());
+        if (createSupplementSelectList != null) createSupplementSelectList.getItems().setAll(magazine.getAvailableSupplements());
+        
+        updateCreatePayerDropdown();
+    }
+
+    private void updateCreatePayerDropdown() {
+        if (createPayingCustomerCombo == null || magazine == null) return;
+        createPayingCustomerCombo.getItems().clear();
+        for (Customer c : magazine.getCustomers()) {
+            if (c instanceof PayingCustomer) {
+                createPayingCustomerCombo.getItems().add((PayingCustomer) c);
+            }
+        }
+    }
+
+    private void displaySupplementInfo(Supplement supplement) {
+        if (infoPanelTextArea == null) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== SUPPLEMENT INFORMATION ===\n");
+        sb.append("Name: ").append(supplement.getName()).append("\n");
+        sb.append("Weekly Cost: $").append(String.format("%.2f", supplement.getWeeklyCost())).append("\n\n");
+        sb.append("Subscribed Customers:\n");
+        
+        boolean found = false;
+        for (Customer c : magazine.getCustomers()) {
+            if (c.getInterestedSupplements().contains(supplement)) {
+                sb.append(" - ").append(c.getName()).append(" (").append(c.getEmail()).append(")\n");
+                found = true;
+            }
+        }
+        if (!found) {
+            sb.append(" - None\n");
+        }
+        infoPanelTextArea.setText(sb.toString());
+        if (loadBillingHistoryButton != null) loadBillingHistoryButton.setVisible(false);
+    }
+
+    private void displayCustomerInfo(Customer customer) {
+        if (infoPanelTextArea == null) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== CUSTOMER INFORMATION ===\n");
+        sb.append("Name: ").append(customer.getName()).append("\n");
+        sb.append("Email: ").append(customer.getEmail()).append("\n");
+
+        if (customer.getAddress() != null) {
+            sb.append("Address: ").append(customer.getAddress().toString()).append("\n");
+        }
+        
+        if (customer instanceof PayingCustomer) {
+            PayingCustomer pc = (PayingCustomer) customer;
+            sb.append("Status: Paying Customer\n");
+            sb.append("Payment Method: ").append(pc.getPaymentMethod().getPaymentDetails()).append("\n");
+            sb.append("Associate Customers Sponsored:\n");
+            if (pc.getAssociateCustomers().isEmpty()) {
+                sb.append(" - None\n");
+            } else {
+                for (AssociateCustomer assoc : pc.getAssociateCustomers()) {
+                    sb.append(" * ").append(assoc.getName()).append(" (").append(assoc.getEmail()).append(")\n");
+                }
+            }
+            if (loadBillingHistoryButton != null) {
+                loadBillingHistoryButton.setVisible(true);
+                loadBillingHistoryButton.setUserData(pc);
+            }
+        } else if (customer instanceof AssociateCustomer) {
+            AssociateCustomer ac = (AssociateCustomer) customer;
+            sb.append("Status: Associate Customer\n");
+            String payerName = (ac.getPayingCustomer() != null) ? ac.getPayingCustomer().getName() : "None";
+            sb.append("Paid by Payer: ").append(payerName).append("\n");
+            if (loadBillingHistoryButton != null) loadBillingHistoryButton.setVisible(false);
+        }
+
+        sb.append("\nSubscribed Supplements:\n");
+        if (customer.getInterestedSupplements().isEmpty()) {
+            sb.append(" - None\n");
+        } else {
+            for (Supplement s : customer.getInterestedSupplements()) {
+                sb.append(" - ").append(s.getName()).append(" ($").append(s.getWeeklyCost()).append("/wk)\n");
+            }
+        }
+
+        infoPanelTextArea.setText(sb.toString());
+    }
+
+    @FXML
+    public void handleLoadBillingHistory() {
+        if (loadBillingHistoryButton == null || infoPanelTextArea == null) return;
+        Object data = loadBillingHistoryButton.getUserData();
+        if (data instanceof PayingCustomer) {
+            PayingCustomer pc = (PayingCustomer) data;
+            infoPanelTextArea.setText("Generating billing history asynchronously...");
+
+            BillingHistoryTask task = new BillingHistoryTask(pc, magazine.getWeeklyBaseCost());
+            task.stateProperty().addListener((obs, oldState, newState) -> {
+                if (newState == Worker.State.SUCCEEDED) {
+                    infoPanelTextArea.setText(task.getValue());
+                } else if (newState == Worker.State.FAILED) {
+                    infoPanelTextArea.setText("Error generating billing history.");
+                }
+            });
+
+            new Thread(task).start();
+        }
+    }
+
+    @FXML
+    public void handleSave() {
+        if (stage != null && magazine != null) {
+            FileHandler.saveMagazine(stage, magazine);
+        }
+    }
+
+    @FXML
+    public void handleLoad() {
+        if (stage != null) {
+            Magazine loaded = FileHandler.loadMagazine(stage);
+            if (loaded != null) {
+                this.magazine = loaded;
+                refreshAllLists();
+                infoPanelTextArea.setText("[SUCCESS] Loaded magazine data successfully.");
+            }
+        }
+    }
+
+    @FXML
+    public void handleAddSupplement() {
+        try {
+            String name = createSupplementNameField.getText().trim();
+            double cost = Double.parseDouble(createSupplementCostField.getText().trim());
+            if (name.isEmpty()) {
+                infoPanelTextArea.setText("Name cannot be empty.");
+                return;
+            }
+            if (!name.isEmpty() && cost > 0) {
+                Supplement s = new Supplement(name, cost);
+                magazine.addSupplement(s);
+                refreshAllLists();
+                createSupplementNameField.clear();
+                createSupplementCostField.clear();
+                infoPanelTextArea.setText("Supplement added: " + name);
+            } else if (cost <= 0) {
+                infoPanelTextArea.setText("Cost must be greater than zero.");
+            }
+        } catch (NumberFormatException e) {
+            infoPanelTextArea.setText("Invalid cost format for supplement.");
+        }
+    }
+
+    @FXML
+    public void handleAddCustomer() {
+        try {
+            String name = createCustomerNameField.getText().trim();
+            String email = createCustomerEmailField.getText().trim();
+            if (name.isEmpty() || email.isEmpty()) {
+                infoPanelTextArea.setText("Name and email cannot be empty.");
+                return;
+            }
+
+            String street = createStreetField != null ? createStreetField.getText().trim() : "";
+            String suburb = createSuburbField != null ? createSuburbField.getText().trim() : "";
+            String state = createStateField != null ? createStateField.getText().trim() : "";
+            String postCode = createPostCodeField != null ? createPostCodeField.getText().trim() : "";
+            Address address = new Address(street, suburb, state, postCode);
+
+            Customer newCust;
+            String type = createCustomerTypeCombo.getValue();
+            
+            if ("Associate Customer".equals(type)) {
+                PayingCustomer payer = createPayingCustomerCombo.getValue();
+                if (payer == null) {
+                    infoPanelTextArea.setText("Please select a paying customer for this associate.");
+                    return;
+                }
+                AssociateCustomer ac = new AssociateCustomer(name, email, address, payer);
+                payer.addAssociateCustomer(ac);
+                newCust = ac;
+            } else {
+                // Flexible Payment Method Handling (Credit Card vs Bank Account)
+                PaymentMethod pm;
+                String payType = createPaymentTypeCombo.getValue();
+                String holder = createPaymentHolderField != null && !createPaymentHolderField.getText().isEmpty() 
+                                ? createPaymentHolderField.getText().trim() : name;
+
+                if ("Bank Account".equals(payType)) {
+                    String bsb = createBsbField != null ? createBsbField.getText().trim() : "";
+                    String accNum = createBankAccountField != null ? createBankAccountField.getText().trim() : "";
+                    pm = new BankAccount(holder, bsb, accNum);
+                } else {
+                    String cardNum = createCardNumberField != null ? createCardNumberField.getText().trim() : "4111222233334444";
+                    String expiry = createCardExpiryField != null ? createCardExpiryField.getText().trim() : "12/28";
+                    pm = new CreditCard(holder, cardNum, expiry);
+                }
+                newCust = new PayingCustomer(name, email, address, pm);
+            }
+
+            // Attach Selected Supplements from List View
+            if (createSupplementSelectList != null) {
+                List<Supplement> selectedSupps = createSupplementSelectList.getSelectionModel().getSelectedItems();
+                for (Supplement s : selectedSupps) {
+                    newCust.addSupplement(s);
+                }
+            }
+
+            magazine.addCustomer(newCust);
+            refreshAllLists();
+            
+            // Clear fields
+            createCustomerNameField.clear();
+            createCustomerEmailField.clear();
+            if (createStreetField != null) createStreetField.clear();
+            if (createSuburbField != null) createSuburbField.clear();
+            if (createStateField != null) createStateField.clear();
+            if (createPostCodeField != null) createPostCodeField.clear();
+
+            infoPanelTextArea.setText("Customer added successfully: " + name);
+        } catch (Exception e) {
+            infoPanelTextArea.setText("Error adding customer: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    public void handleDeleteCustomer() {
+        Customer selected = editCustomerListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            magazine.removeCustomer(selected);
+            refreshAllLists();
+            infoPanelTextArea.setText("Customer removed: " + selected.getName());
+        } else {
+            infoPanelTextArea.setText("Please select a customer to delete from the Edit list.");
+        }
+    }
+
+    @FXML
+    public void handleDeleteSupplement() {
+        Supplement selected = editSupplementListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            magazine.removeSupplement(selected);
+            refreshAllLists();
+            infoPanelTextArea.setText("Supplement removed: " + selected.getName());
+        } else {
+            infoPanelTextArea.setText("Please select a supplement to delete from the Edit list.");
+        }
+    }
+
+    @FXML
+    public void handleUpdateCustomer() {
+        Customer selected = editCustomerListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            String newName = editCustomerNameField.getText().trim();
+            String newEmail = editCustomerEmailField.getText().trim();
+            if (!newName.isEmpty() && !newEmail.isEmpty()) {
+                // Since email is identifier, update via setters
+                // 1. Email Uniqueness Check
+                boolean emailExists = false;
+                for (Customer c : magazine.getCustomers()) {
+                    // Check if the input email matches an existing customer's email
+                    if (c.getEmail().equalsIgnoreCase(newEmail)) {
+                        // If it matches, make sure it isn't the customer we are currently updating
+                        if (c != (selected)) {
+                            emailExists = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if (emailExists) {
+                    infoPanelTextArea.setText("Error: The email '" + newEmail + "' is already in use by another customer.");
+                    return; // Stop the execution immediately
+                }
+                
+                // 2. Apply updates via the new setters if unique
+                selected.setName(newName);
+                selected.setEmail(newEmail);
+
+                if (selected.getAddress() != null) {
+                    String newStreet = editStreetField != null ? editStreetField.getText().trim() : selected.getAddress().getStreet();
+                    String newSuburb = editSuburbField != null ? editSuburbField.getText().trim() : selected.getAddress().getSuburb();
+                    String newState = editStateField != null ? editStateField.getText().trim() : selected.getAddress().getState();
+                    String newPostCode = editPostCodeField != null ? editPostCodeField.getText().trim() : selected.getAddress().getPostCode();
+
+                    selected.getAddress().setStreet(newStreet);
+                    selected.getAddress().setSuburb(newSuburb);
+                    selected.getAddress().setState(newState);
+                    selected.getAddress().setPostCode(newPostCode);
+                }
+            
+                refreshAllLists();
+                infoPanelTextArea.setText("Customer updated: " + newName);
+            } else {
+                infoPanelTextArea.setText("Name and email cannot be blank.");
+            }
+        } else {
+            infoPanelTextArea.setText("Please select a customer to update.");
+        }
+    }
+
+    @FXML
+    public void handleUpdateSupplement() {
+        Supplement selected = editSupplementListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            try {
+                String newName = editSupplementNameField.getText().trim();
+                double newCost = Double.parseDouble(editSupplementCostField.getText().trim());
+                if (!newName.isEmpty() && newCost > 0) {
+
+                    // 1. Supplement Name Uniqueness Check
+                    boolean nameExists = false;
+                    for (Supplement s : magazine.getAvailableSupplements()) {
+                        // Check if the input name matches an existing supplement's name
+                        if (s.getName().equalsIgnoreCase(newName)) {
+                            // If it matches, make sure it isn't the supplement we are currently updating
+                            if (s != (selected)) {
+                                nameExists = true;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (nameExists) {
+                        infoPanelTextArea.setText("Error: The supplement '" + newName + "' already exists in the catalog.");
+                        return; // Stop the execution immediately
+                    }
+
+                    selected.setName(newName);
+                    selected.setWeeklyCost(newCost);
+                    refreshAllLists();
+                    infoPanelTextArea.setText("Supplement updated successfully.");
+                } else if (newCost <= 0) {
+                    infoPanelTextArea.setText("Cost must be greater than zero.");
+                }
+            } catch (NumberFormatException e) {
+                infoPanelTextArea.setText("Invalid weekly cost format.");
+            }
+        } else {
+            infoPanelTextArea.setText("Please select a supplement to update.");
+        }
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\PayingCustomer.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Represents a customer who pays for their own subscription and optional associates.
+ * File Name: payingCustomer.java
+ */
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PayingCustomer extends Customer implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The payment method registered to this customer for automatic billing. */
+    private PaymentMethod paymentMethod;
+
+    /** List of associate customers sponsored by this paying customer. */
+    private List<AssociateCustomer> associateCustomers;
+
+    /**
+     * Constructs a PayingCustomer with specified name, email address, and payment method.
+     *
+     * @param name          the full name of the paying customer
+     * @param email         the email address of the paying customer
+     * @param paymentMethod the payment method used to process invoices
+     */
+    public PayingCustomer(String name, String email, Address address, PaymentMethod paymentMethod) {
+        super(name, email, address);
+        this.paymentMethod = paymentMethod;
+        this.associateCustomers = new ArrayList<>();
+    }
+
+    /**
+     * Gets the current payment method linked to this account.
+     *
+     * @return the associated {@link PaymentMethod}
+     */
+    public PaymentMethod getPaymentMethod() { return paymentMethod; }
+
+    /**
+     * Updates the payment method for this account.
+     *
+     * @param paymentMethod the new {@link PaymentMethod} to set
+     */
+    public void setPaymentMethod(PaymentMethod paymentMethod) { this.paymentMethod = paymentMethod; }
+
+    /**
+     * Retrieves the list of associate customers sponsored by this paying customer.
+     *
+     * @return a list of {@link AssociateCustomer} instances
+     */
+    public List<AssociateCustomer> getAssociateCustomers() { return associateCustomers; }
+
+    /**
+     * Links an associate customer to this paying customer's account.
+     * <p>
+     * Ensures bidirectional linkage by updating the associate's paying customer reference.
+     * </p>
+     *
+     * @param associate the {@link AssociateCustomer} to be added
+     */
+    public void addAssociateCustomer(AssociateCustomer associate) {
+        if (!associateCustomers.contains(associate)) {
+            associateCustomers.add(associate);
+            associate.setPayingCustomer(this);
+        }
+    }
+
+    /**
+     * Unlinks an associate customer from this paying customer's account.
+     * <p>
+     * Ensures bidirectional unlinking by clearing the associate's paying customer reference.
+     * </p>
+     *
+     * @param associate the {@link AssociateCustomer} to be removed
+     */
+    public void removeAssociateCustomer(AssociateCustomer associate) {
+        if (associateCustomers.remove(associate)) {
+            associate.setPayingCustomer(null);
+        }
+    }
+
+    /**
+     * Calculates the total monthly charge for this primary customer and all linked associates.
+     * <p>
+     * The total is computed by summing the weekly base magazine cost and supplement costs 
+     * for the primary customer and each associate, multiplied by 4 weeks.
+     * </p>
+     *
+     * @param magazineBaseCost the weekly base cost of the main magazine subscription
+     * @return the total calculated monthly cost ($) across 4 weeks
+     */
+    public double calculateMonthlyTotal(double magazineBaseCost) {
+        double weeklyTotal = magazineBaseCost + getWeeklySupplementsCost();
+        for (AssociateCustomer assoc : associateCustomers) {
+            weeklyTotal += magazineBaseCost + assoc.getWeeklySupplementsCost();
+        }
+        return weeklyTotal * 4;
+    }
+
+    /**
+     * Generates a fully itemized monthly billing statement email formatted for console output.
+     *
+     * @param magazineBaseCost the weekly base cost of the main magazine subscription
+     * @return a formatted email String containing itemized charges for primary and associate accounts
+     */
+    public String generateMonthlyBillingEmail(double magazineBaseCost) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("To: ").append(getEmail()).append("\n");
+        sb.append("Subject: Monthly Subscription Statement & Invoice\n");
+        sb.append("Dear ").append(getName()).append(",\n\n");
+        sb.append("Billing Address: ").append(getAddress().toString()).append("\n");
+        sb.append("Below is your itemized monthly billing statement (4-Week Period):\n\n");
+
+        // Primary account holder itemization
+        sb.append("Primary Customer: ").append(getName()).append("\n");
+        sb.append(" - Main Magazine Base Fee (4 weeks): $")
+          .append(String.format("%.2f", magazineBaseCost * 4)).append("\n");
+        sb.append(" - Supplements Fee (4 weeks): $")
+          .append(String.format("%.2f", getWeeklySupplementsCost() * 4)).append("\n");
+
+        // Associate customers itemization
+        if (!associateCustomers.isEmpty()) {
+            sb.append("\nAssociate Accounts Covered:\n");
+            for (AssociateCustomer assoc : associateCustomers) {
+                sb.append(" * Associate: ").append(assoc.getName()).append("(").append(assoc.getEmail()).append(")\n");
+                sb.append("   - Delivery Address: ").append(assoc.getAddress().toString()).append("\n");
+                sb.append("   - Main Magazine Base Fee (4 weeks): $")
+                  .append(String.format("%.2f", magazineBaseCost * 4)).append("\n");
+                sb.append("   - Supplements Fee (4 weeks): $")
+                  .append(String.format("%.2f", assoc.getWeeklySupplementsCost() * 4)).append("\n");
+            }
+        }
+
+        double totalMonthlyCost = calculateMonthlyTotal(magazineBaseCost);
+        sb.append("\nTotal Monthly Charge: $").append(String.format("%.2f", totalMonthlyCost)).append("\n");
+        sb.append("Payment Method Charged: ").append(paymentMethod.getPaymentDetails()).append("\n");
+        sb.append("--------------------------------------------------\n");
+        return sb.toString();
+    }
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\PaymentMethod.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Abstract class representing a generic payment method.
+ * File Name: PaymentMethod.java
+ */
+
+import java.io.Serializable;
+
+public abstract class PaymentMethod implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The full legal name of the account holder associated with this payment method. */
+    private String accountName;
+
+    /**
+     * Constructs a new PaymentMethod instance with the specified account holder name.
+     *
+     * @param accountName the name of the primary cardholder or account owner; defaults to an empty 
+     *                    string if {@code null} is provided
+     */
+    public PaymentMethod(String accountName) {
+        this.accountName = accountName != null ? accountName.trim() : "";
+    }
+
+    /**
+     * Retrieves the account holder's name.
+     *
+     * @return the name associated with this payment method
+     */
+    public String getAccountName() { return accountName; }
+
+    /**
+     * Abstract contract method to retrieve formatted payment account details suitable for billing statements.
+     *
+     * @return a formatted String containing key payment method details (e.g., masked card numbers or BSB/Account numbers)
+     */
+    public abstract String getPaymentDetails();
+}
+
+
+=== FILE: D:\MY-DATA\Documents\ICT373\ICT373_Assignment2_35702674_ChangYunShiang\Supplement.java ===
+/**
+ * Title: Magazine Service Test Driver
+ * Author: Chang Yun Shiang
+ * Student ID: 35702674
+ * Date: October 2026
+ * Represents a weekly supplement that can be added to a customer's subscription.
+ * File Name: Supplement.java
+ */
+
+import java.io.Serializable;
+
+public class Supplement implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /** The display name of the supplement. */
+    private String name;
+
+    /** The weekly recurring cost of this supplement in dollars ($). */
+    private double weeklyCost;
+
+    /**
+     * Constructs a new Supplement instance with the specified name and weekly cost.
+     *
+     * @param name       the display name of the supplement; defaults to empty string if {@code null}
+     * @param weeklyCost the recurring weekly cost of the supplement ($)
+     * @throws IllegalArgumentException if the name is null, empty, or consists only of whitespace
+     */
+    public Supplement(String name, double weeklyCost) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Supplement name cannot be null or empty.");
+        }
+        this.name = name.trim();
+        this.weeklyCost = weeklyCost;
+    }
+
+    /**
+     * Gets the name of the supplement.
+     *
+     * @return the supplement name
+     */
+    public String getName() { return name; }
+
+    /**
+     * Sets the name of the supplement, automatically trimming leading and trailing whitespace.
+     *
+     * @param name the new supplement name.
+     * @throws IllegalArgumentException if the name is null, empty, or consists only of whitespace
+     */
+    public void setName(String name) { 
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Supplement name cannot be null or empty.");
+        }
+        this.name = name.trim();
+    }
+
+    /**
+     * Gets the weekly subscription cost of the supplement.
+     *
+     * @return the weekly cost ($)
+     */
+    public double getWeeklyCost() { return weeklyCost; }
+
+    /**
+     * Updates the weekly subscription cost of the supplement.
+     *
+     * @param weeklyCost the new weekly cost ($) to set
+     */
+    public void setWeeklyCost(double weeklyCost) { this.weeklyCost = weeklyCost; }
+
+    /**
+     * Returns a string representation of the supplement containing its name and formatted weekly cost.
+     *
+     * @return a formatted String (e.g., "Tech & Gadgets ($4.50/week)")
+     */
+    @Override
+    public String toString() {
+        return name + " ($" + String.format("%.2f", weeklyCost) + "/week)";
+    }
+
+    /**
+     * Compares this supplement with another object for equality.
+     * <p>
+     * Two supplements are considered equal if their names match on a case-insensitive, trimmed basis.
+     * </p>
+     *
+     * @param o the reference object with which to compare
+     * @return {@code true} if this object is equal to the argument; {@code false} otherwise
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Supplement that = (Supplement) o;
+        return name != null && that.name != null 
+            && name.trim().equalsIgnoreCase(that.name.trim());
+    }
+
+    /**
+     * Generates a hash code for this supplement based on its case-insensitive trimmed name.
+     *
+     * @return integer hash code derived from the lowercase supplement name
+     */
+    @Override
+    public int hashCode() {
+        return name != null ? name.trim().toLowerCase().hashCode() : 0;
+    }
+}
+
+
