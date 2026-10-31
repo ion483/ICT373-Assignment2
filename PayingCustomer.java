@@ -27,8 +27,8 @@ public class PayingCustomer extends Customer implements Serializable {
      * @param email         the email address of the paying customer
      * @param paymentMethod the payment method used to process invoices
      */
-    public PayingCustomer(String name, String email, PaymentMethod paymentMethod) {
-        super(name, email);
+    public PayingCustomer(String name, String email, Address address, PaymentMethod paymentMethod) {
+        super(name, email, address);
         this.paymentMethod = paymentMethod;
         this.associateCustomers = new ArrayList<>();
     }
@@ -112,6 +112,7 @@ public class PayingCustomer extends Customer implements Serializable {
         sb.append("To: ").append(getEmail()).append("\n");
         sb.append("Subject: Monthly Subscription Statement & Invoice\n");
         sb.append("Dear ").append(getName()).append(",\n\n");
+        sb.append("Billing Address: ").append(getAddress().toString()).append("\n");
         sb.append("Below is your itemized monthly billing statement (4-Week Period):\n\n");
 
         // Primary account holder itemization
@@ -126,6 +127,7 @@ public class PayingCustomer extends Customer implements Serializable {
             sb.append("\nAssociate Accounts Covered:\n");
             for (AssociateCustomer assoc : associateCustomers) {
                 sb.append(" * Associate: ").append(assoc.getName()).append("(").append(assoc.getEmail()).append(")\n");
+                sb.append("   - Delivery Address: ").append(assoc.getAddress().toString()).append("\n");
                 sb.append("   - Main Magazine Base Fee (4 weeks): $")
                   .append(String.format("%.2f", magazineBaseCost * 4)).append("\n");
                 sb.append("   - Supplements Fee (4 weeks): $")

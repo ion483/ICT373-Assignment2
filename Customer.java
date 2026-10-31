@@ -20,6 +20,9 @@ public abstract class Customer implements Serializable {
     /** The email address of the customer (used as a unique identifier). */
     private String email;
 
+    /** The physical address of the customer. */
+    private Address address;
+
     /** The list of magazine supplements this customer is subscribed to. */
     private List<Supplement> interestedSupplements;
 
@@ -32,17 +35,22 @@ public abstract class Customer implements Serializable {
      *
      * @param name                      the full name of the customer (cannot be null or empty)
      * @param email                     the contact email address used as a unique identifier (cannot be null or empty)
+     * @param address the physical address of the customer (cannot be null)
      * @throws IllegalArgumentException if the name or email is null, empty, or consists only of whitespace
      */
-    public Customer(String name, String email) {
+    public Customer(String name, String email, Address address) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Customer name cannot be null or empty.");
         }
         if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("Customer email cannot be null or empty.");
         }
+        if (address == null) {
+            throw new IllegalArgumentException("Customer address cannot be null.");
+        }
         this.name = name.trim();
         this.email = email.trim();
+        this.address = address;
         this.interestedSupplements = new ArrayList<>();
     }
 
@@ -87,6 +95,25 @@ public abstract class Customer implements Serializable {
         this.email = email.trim();
     }
 
+    /**
+     * Retrieves the customer's physical address.
+     *
+     * @return the Address object
+     */
+    public Address getAddress() { return address; }
+
+    /**
+     * Updates the customer's physical address.
+     *
+     * @param address the new Address object (cannot be null)
+     * @throws IllegalArgumentException if the address is null
+     */
+    public void setAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Customer address cannot be null.");
+        }
+        this.address = address;
+    }
 
     /**
      * Retrieves the list of supplements the customer is currently subscribed to.
@@ -146,6 +173,7 @@ public abstract class Customer implements Serializable {
         sb.append("Subject: Your Weekly Magazine is Ready!\n");
         sb.append("Dear ").append(name).append(",\n\n");
         sb.append("Your main magazine issue for this week is ready to read.\n");
+        sb.append("Delivery Address: ").append(address.toString()).append("\n");
         sb.append("Current Subscribed Supplements:\n");
         
         if (interestedSupplements.isEmpty()) {

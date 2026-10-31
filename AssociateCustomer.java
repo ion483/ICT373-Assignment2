@@ -20,9 +20,10 @@ public class AssociateCustomer extends Customer implements Serializable {
      *
      * @param name  the full name of the associate customer
      * @param email the email address of the associate customer
+     * @param address the physical address of the associate customer
      */
-    public AssociateCustomer(String name, String email) {
-        super(name, email);
+    public AssociateCustomer(String name, String email, Address address) {
+        super(name, email, address);
     }
 
     /**
@@ -30,10 +31,11 @@ public class AssociateCustomer extends Customer implements Serializable {
      *
      * @param name           the full name of the associate customer
      * @param email          the email address of the associate customer
+     * @param address        the physical address of the associate customer
      * @param payingCustomer the paying customer responsible for billing
      */
-    public AssociateCustomer(String name, String email, PayingCustomer payingCustomer) {
-        super(name, email);
+    public AssociateCustomer(String name, String email, Address address, PayingCustomer payingCustomer) {
+        super(name, email, address);
         this.payingCustomer = payingCustomer;
     }
 

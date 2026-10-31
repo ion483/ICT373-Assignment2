@@ -36,10 +36,10 @@ public class MainDashboardController {
     @FXML private TextField createCustomerEmailField;
     
     // Address fields for Create Mode
-    @FXML private TextField createStreetNumberField;
-    @FXML private TextField createStreetNameField;
+    @FXML private TextField createStreetField;
     @FXML private TextField createSuburbField;
-    @FXML private TextField createPostcodeField;
+    @FXML private TextField createStateField;
+    @FXML private TextField createPostCodeField;
 
     @FXML private ComboBox<String> createCustomerTypeCombo;
     @FXML private ComboBox<PayingCustomer> createPayingCustomerCombo;
@@ -58,6 +58,12 @@ public class MainDashboardController {
     @FXML private ListView<Supplement> editSupplementListView;
     @FXML private TextField editCustomerNameField;
     @FXML private TextField editCustomerEmailField;
+
+    @FXML private TextField editStreetField;
+    @FXML private TextField editSuburbField;
+    @FXML private TextField editStateField;
+    @FXML private TextField editPostCodeField;
+
     @FXML private TextField editSupplementNameField;
     @FXML private TextField editSupplementCostField;
 
@@ -115,6 +121,13 @@ public class MainDashboardController {
                 if (cust != null) {
                     editCustomerNameField.setText(cust.getName());
                     editCustomerEmailField.setText(cust.getEmail());
+
+                    if (cust.getAddress() != null) {
+                        if (editStreetField != null) editStreetField.setText(cust.getAddress().getStreet());
+                        if (editSuburbField != null) editSuburbField.setText(cust.getAddress().getSuburb());
+                        if (editStateField != null) editStateField.setText(cust.getAddress().getState());
+                        if (editPostCodeField != null) editPostCodeField.setText(cust.getAddress().getPostCode());
+                    }
                 }
             });
         }
@@ -179,6 +192,10 @@ public class MainDashboardController {
         sb.append("=== CUSTOMER INFORMATION ===\n");
         sb.append("Name: ").append(customer.getName()).append("\n");
         sb.append("Email: ").append(customer.getEmail()).append("\n");
+
+        if (customer.getAddress() != null) {
+            sb.append("Address: ").append(customer.getAddress().toString()).append("\n");
+        }
         
         if (customer instanceof PayingCustomer) {
             PayingCustomer pc = (PayingCustomer) customer;
@@ -290,6 +307,12 @@ public class MainDashboardController {
                 return;
             }
 
+            String street = createStreetField != null ? createStreetField.getText().trim() : "";
+            String suburb = createSuburbField != null ? createSuburbField.getText().trim() : "";
+            String state = createStateField != null ? createStateField.getText().trim() : "";
+            String postCode = createPostCodeField != null ? createPostCodeField.getText().trim() : "";
+            Address address = new Address(street, suburb, state, postCode);
+
             Customer newCust;
             String type = createCustomerTypeCombo.getValue();
             
@@ -299,7 +322,7 @@ public class MainDashboardController {
                     infoPanelTextArea.setText("Please select a paying customer for this associate.");
                     return;
                 }
-                AssociateCustomer ac = new AssociateCustomer(name, email, payer);
+                AssociateCustomer ac = new AssociateCustomer(name, email, address, payer);
                 payer.addAssociateCustomer(ac);
                 newCust = ac;
             } else {
@@ -318,7 +341,7 @@ public class MainDashboardController {
                     String expiry = createCardExpiryField != null ? createCardExpiryField.getText().trim() : "12/28";
                     pm = new CreditCard(holder, cardNum, expiry);
                 }
-                newCust = new PayingCustomer(name, email, pm);
+                newCust = new PayingCustomer(name, email, address, pm);
             }
 
             // Attach Selected Supplements from List View
@@ -335,10 +358,10 @@ public class MainDashboardController {
             // Clear fields
             createCustomerNameField.clear();
             createCustomerEmailField.clear();
-            if (createStreetNumberField != null) createStreetNumberField.clear();
-            if (createStreetNameField != null) createStreetNameField.clear();
+            if (createStreetField != null) createStreetField.clear();
             if (createSuburbField != null) createSuburbField.clear();
-            if (createPostcodeField != null) createPostcodeField.clear();
+            if (createStateField != null) createStateField.clear();
+            if (createPostCodeField != null) createPostCodeField.clear();
 
             infoPanelTextArea.setText("Customer added successfully: " + name);
         } catch (Exception e) {
@@ -399,6 +422,18 @@ public class MainDashboardController {
                 // 2. Apply updates via the new setters if unique
                 selected.setName(newName);
                 selected.setEmail(newEmail);
+
+                if (selected.getAddress() != null) {
+                    String newStreet = editStreetField != null ? editStreetField.getText().trim() : selected.getAddress().getStreet();
+                    String newSuburb = editSuburbField != null ? editSuburbField.getText().trim() : selected.getAddress().getSuburb();
+                    String newState = editStateField != null ? editStateField.getText().trim() : selected.getAddress().getState();
+                    String newPostCode = editPostCodeField != null ? editPostCodeField.getText().trim() : selected.getAddress().getPostCode();
+
+                    selected.getAddress().setStreet(newStreet);
+                    selected.getAddress().setSuburb(newSuburb);
+                    selected.getAddress().setState(newState);
+                    selected.getAddress().setPostCode(newPostCode);
+                }
             
                 refreshAllLists();
                 infoPanelTextArea.setText("Customer updated: " + newName);
