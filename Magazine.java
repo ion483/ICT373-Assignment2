@@ -77,6 +77,29 @@ public class Magazine implements Serializable {
     }
 
     /**
+     * Removes an existing supplement from the magazine's catalog and cascades the removal 
+     * from any customer's subscribed/interested supplement list.
+     *
+     * @param supplement the Supplement instance to remove
+     * @return true if the supplement was successfully removed; false if null or not found
+     */
+    public boolean removeSupplement(Supplement supplement) {
+        if (supplement == null || !availableSupplements.contains(supplement)) {
+            return false;
+        }
+
+        // Cascade removal: remove this supplement from every customer's subscription list
+        for (Customer customer : customers) {
+            if (customer.getInterestedSupplements() != null) {
+                customer.removeSupplement(supplement);
+            }
+        }
+
+        // Finally, remove the supplement from the magazine's global catalog
+        return availableSupplements.remove(supplement);
+    }
+
+    /**
      * Registers a new customer with the magazine service if not already registered.
      *
      * @param customer the Customer instance to add

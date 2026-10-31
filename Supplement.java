@@ -43,10 +43,14 @@ public class Supplement implements Serializable {
     /**
      * Sets the name of the supplement, automatically trimming leading and trailing whitespace.
      *
-     * @param name the new supplement name; defaults to empty string if {@code null}
+     * @param name the new supplement name.
+     * @throws IllegalArgumentException if the name is null, empty, or consists only of whitespace
      */
     public void setName(String name) { 
-        this.name = name != null ? name.trim() : ""; 
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Supplement name cannot be null or empty.");
+        }
+        this.name = name.trim();
     }
 
     /**

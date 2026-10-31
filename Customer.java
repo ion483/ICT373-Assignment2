@@ -54,11 +54,39 @@ public abstract class Customer implements Serializable {
     public String getName() { return name; }
 
     /**
+     * Updates the customer's full name.
+     *
+     * @param name the new full name (cannot be null or empty)
+     * @throws IllegalArgumentException if the name is null or empty
+     */
+    public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer name cannot be null or empty.");
+        }
+        this.name = name.trim();
+    }
+
+    /**
      * Retrieves the customer's email address.
      *
      * @return the customer email
      */
     public String getEmail() { return email; }
+
+
+    /**
+     * Updates the customer's email address.
+     *
+     * @param email the new unique email address (cannot be null or empty)
+     * @throws IllegalArgumentException if the email is null or empty
+     */
+    public void setEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Customer email cannot be null or empty.");
+        }
+        this.email = email.trim();
+    }
+
 
     /**
      * Retrieves the list of supplements the customer is currently subscribed to.

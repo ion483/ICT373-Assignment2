@@ -71,6 +71,46 @@ public class Address implements Serializable {
     public String getPostCode() { return postCode; }
 
     /**
+     * Sets the street address line.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param street the street address to set
+     */
+    public void setStreet(String street) {
+        this.street = street != null ? street.trim() : "";
+    }
+
+    /**
+     * Sets the suburb or locality.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param suburb the suburb to set
+     */
+    public void setSuburb(String suburb) {
+        this.suburb = suburb != null ? suburb.trim() : "";
+    }
+
+    /**
+     * Sets the state or territory.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param state the state to set
+     */
+    public void setState(String state) {
+        this.state = state != null ? state.trim() : "";
+    }
+
+    /**
+     * Sets the postal code.
+     * Null arguments are converted to empty strings, and whitespace is trimmed.
+     *
+     * @param postCode the postal code to set
+     */
+    public void setPostCode(String postCode) {
+        this.postCode = postCode != null ? postCode.trim() : "";
+    }
+
+    /**
      * Returns a single-line formatted representation of the address.
      *
      * @return a formatted string in the format "Street, Suburb State PostCode"
